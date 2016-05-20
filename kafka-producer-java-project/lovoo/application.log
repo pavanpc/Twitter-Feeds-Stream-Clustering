@@ -1,0 +1,58 @@
+2016-05-20 16:10:48 INFO  VerifiableProperties:68 - Verifying properties
+2016-05-20 16:10:48 INFO  VerifiableProperties:68 - Property client.id is overridden to camus
+2016-05-20 16:10:48 INFO  VerifiableProperties:68 - Property metadata.broker.list is overridden to localhost:9092
+2016-05-20 16:10:48 INFO  VerifiableProperties:68 - Property serializer.class is overridden to kafka.serializer.StringEncoder
+2016-05-20 16:10:49 DEBUG KafkaProducer:47 - INFO: Got messages.Pubslishig messages to kafka topic...
+2016-05-20 16:10:49 DEBUG PoolingClientConnectionManager:186 - Connection request: [route: {s}->https://stream.twitter.com][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2016-05-20 16:10:49 DEBUG PoolingClientConnectionManager:220 - Connection leased: [id: 0][route: {s}->https://stream.twitter.com][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+2016-05-20 16:10:49 DEBUG DefaultClientConnectionOperator:177 - Connecting to stream.twitter.com:443
+2016-05-20 16:10:50 DEBUG RequestAddCookies:132 - CookieSpec selected: best-match
+2016-05-20 16:10:50 DEBUG RequestAuthCache:78 - Auth cache not set in the context
+2016-05-20 16:10:50 DEBUG RequestProxyAuthentication:87 - Proxy auth state: UNCHALLENGED
+2016-05-20 16:10:50 DEBUG DefaultHttpClient:713 - Attempt 1 to execute request
+2016-05-20 16:10:50 DEBUG DefaultClientConnection:269 - Sending request: POST /1.1/statuses/filter.json?delimited=length&stall_warnings=true HTTP/1.1
+2016-05-20 16:10:50 DEBUG headers:273 - >> POST /1.1/statuses/filter.json?delimited=length&stall_warnings=true HTTP/1.1
+2016-05-20 16:10:50 DEBUG headers:276 - >> Content-Type: application/x-www-form-urlencoded
+2016-05-20 16:10:50 DEBUG headers:276 - >> Authorization: OAuth oauth_signature="Txuvn2EHF8JFekh3ozTbJ0Qygdg%3D", oauth_nonce="48854358252167219421463740849250", oauth_token="105520107-lZsfnlu5pAqU9u3nQ8ZtK5UxFLvyP0UH1exzASIY", oauth_consumer_key="DUHQIwDgegJ4ypsN1whBIiT6W", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1463740849", oauth_version="1.0"
+2016-05-20 16:10:50 DEBUG headers:276 - >> Accept-Encoding: gzip,deflate
+2016-05-20 16:10:50 DEBUG headers:276 - >> Content-Length: 23
+2016-05-20 16:10:50 DEBUG headers:276 - >> Host: stream.twitter.com
+2016-05-20 16:10:50 DEBUG headers:276 - >> Connection: Keep-Alive
+2016-05-20 16:10:50 DEBUG headers:276 - >> User-Agent: Hosebird-Client 2.2.0
+2016-05-20 16:10:51 DEBUG DefaultClientConnection:254 - Receiving response: HTTP/1.1 420 Enhance Your Calm
+2016-05-20 16:10:51 DEBUG headers:257 - << HTTP/1.1 420 Enhance Your Calm
+2016-05-20 16:10:51 DEBUG headers:260 - << connection: close
+2016-05-20 16:10:51 DEBUG headers:260 - << content-length: 36
+2016-05-20 16:10:51 DEBUG headers:260 - << content-type: text/html
+2016-05-20 16:10:51 DEBUG headers:260 - << date: Fri, 20 May 2016 10:40:51 GMT
+2016-05-20 16:10:51 DEBUG headers:260 - << server: tsa
+2016-05-20 16:10:51 DEBUG headers:260 - << x-connection-hash: 6d91c5b99f18956b01fccfbaddc36183
+2016-05-20 16:10:56 DEBUG PoolingClientConnectionManager:287 - Connection manager is shutting down
+2016-05-20 16:10:56 DEBUG DefaultClientConnection:169 - Connection 0.0.0.0:50123<->199.59.148.138:443 closed
+2016-05-20 16:10:56 DEBUG DefaultClientConnection:169 - Connection 0.0.0.0:50123<->199.59.148.138:443 closed
+2016-05-20 16:10:56 DEBUG PoolingClientConnectionManager:293 - Connection manager shut down
+2016-05-20 16:10:56 DEBUG PoolingClientConnectionManager:281 - Connection released: [id: 0][route: {s}->https://stream.twitter.com][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2016-05-20 16:10:56 DEBUG PoolingClientConnectionManager:186 - Connection request: [route: {s}->https://stream.twitter.com][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+2016-05-20 16:10:56 DEBUG PoolingClientConnectionManager:220 - Connection leased: [id: 1][route: {s}->https://stream.twitter.com][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+2016-05-20 16:10:56 DEBUG DefaultClientConnectionOperator:177 - Connecting to stream.twitter.com:443
+2016-05-20 16:10:57 DEBUG RequestAddCookies:132 - CookieSpec selected: best-match
+2016-05-20 16:10:57 DEBUG RequestAuthCache:78 - Auth cache not set in the context
+2016-05-20 16:10:57 DEBUG RequestProxyAuthentication:87 - Proxy auth state: UNCHALLENGED
+2016-05-20 16:10:57 DEBUG DefaultHttpClient:713 - Attempt 1 to execute request
+2016-05-20 16:10:57 DEBUG DefaultClientConnection:269 - Sending request: POST /1.1/statuses/filter.json?delimited=length&stall_warnings=true HTTP/1.1
+2016-05-20 16:10:57 DEBUG headers:273 - >> POST /1.1/statuses/filter.json?delimited=length&stall_warnings=true HTTP/1.1
+2016-05-20 16:10:57 DEBUG headers:276 - >> Content-Type: application/x-www-form-urlencoded
+2016-05-20 16:10:57 DEBUG headers:276 - >> Authorization: OAuth oauth_signature="b0n9MyYsF%2BoxGYXMf5sbqCZLXUA%3D", oauth_nonce="43383818263199378681463740856434", oauth_token="105520107-lZsfnlu5pAqU9u3nQ8ZtK5UxFLvyP0UH1exzASIY", oauth_consumer_key="DUHQIwDgegJ4ypsN1whBIiT6W", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1463740856", oauth_version="1.0"
+2016-05-20 16:10:57 DEBUG headers:276 - >> Accept-Encoding: gzip,deflate
+2016-05-20 16:10:57 DEBUG headers:276 - >> Content-Length: 23
+2016-05-20 16:10:57 DEBUG headers:276 - >> Host: stream.twitter.com
+2016-05-20 16:10:57 DEBUG headers:276 - >> Connection: Keep-Alive
+2016-05-20 16:10:57 DEBUG headers:276 - >> User-Agent: Hosebird-Client 2.2.0
+2016-05-20 16:10:57 DEBUG DefaultClientConnection:254 - Receiving response: HTTP/1.1 420 Enhance Your Calm
+2016-05-20 16:10:57 DEBUG headers:257 - << HTTP/1.1 420 Enhance Your Calm
+2016-05-20 16:10:57 DEBUG headers:260 - << connection: close
+2016-05-20 16:10:57 DEBUG headers:260 - << content-length: 36
+2016-05-20 16:10:57 DEBUG headers:260 - << content-type: text/html
+2016-05-20 16:10:57 DEBUG headers:260 - << date: Fri, 20 May 2016 10:40:57 GMT
+2016-05-20 16:10:57 DEBUG headers:260 - << server: tsa
+2016-05-20 16:10:57 DEBUG headers:260 - << x-connection-hash: 032cd7da17ffc49fb4e3f8485bbfbc79

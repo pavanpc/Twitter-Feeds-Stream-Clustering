@@ -1,5 +1,7 @@
 # Twiter Feeds clustring using kafka, Streaming spark and spark mllib
 
+## Design Details
+
 ##Technology Used
   1. Python 2.7.6
   2. kafka 0.9.0

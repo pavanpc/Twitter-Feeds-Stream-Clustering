@@ -12,7 +12,6 @@
   4. To start with we should have some model to already trained. So Googles'  word2vector model is used to train data offline and stored in parquet file.
   5. The model is read from in streaming conext and the clusters are obtained applying streaming-kmeans with decay factor.
   6. The clusters are formed based on geo and words similarities in twitter feeds. Read more about word2vector here.https://code.google.com/archive/p/word2vec/
-  7. 
 ##Technology Used
   1. Python 2.7.6
   2. kafka 0.9.0

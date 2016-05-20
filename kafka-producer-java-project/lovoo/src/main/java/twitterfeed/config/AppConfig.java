@@ -10,6 +10,15 @@ import org.apache.log4j.Logger;
 
 import twitterfeed.exception.AppConfigException;
 
+/*
+ * @author Pavan PC
+ * @Date 19-May-2016
+ * 
+ * Contains all application related configurations like 
+ * 1. Consumer key, secret key of twitter streaming api
+ * 2. token
+ * All the config properties are read from a configuration file
+ */
 public class AppConfig {
 	private final static Logger logger = Logger.getLogger(AppConfig.class);
 	private String consumerKey;
@@ -72,7 +81,6 @@ public class AppConfig {
 					logger.debug(e.getMessage());
 					throw new AppConfigException(
 							"ERROR: Error in Reading AppConfig properties ");
-					// e.printStackTrace();
 				}
 			}
 		}

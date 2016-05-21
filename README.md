@@ -18,7 +18,7 @@
 2. Start with a batch window size of 5-10 seconds and observe processing time.Try to alter the time interval  and observe processing time.
 3. Limit the stream receiver using spark.streaming.receiver.maxRate option for given time window.
 4. After having above stable system, increase parallelism using by increasing the amount of Spark workers and Partitioning  Kafka messages and creating a Stream for each partition and Repartitioning these Streams again.
-5. The current application runs in a local with a batch interval of 15 seconds and one kafka parition.
+5. The current application runs in a local mode with a batch interval of 15 seconds and one kafka parition.
 
 
 

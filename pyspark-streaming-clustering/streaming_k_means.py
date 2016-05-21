@@ -241,7 +241,7 @@ if __name__ == "__main__":
     # Converts kafka event to json
     # Filters them based on created_at field in json. 
     # TODO: We can use Avro for schema management
-    #Gets Coordinates lat,lng, and tokenize tweet text and append word2vect vector for every token
+    #Gets  Coordinates lat,lng, and tokenize tweet text and append word2vect vector for every token
     print("Processing tweets....")
     processed_tweets= kafkaStream.map(lambda tweet : get_json_from_string(tweet[1]) ).filter(lambda tweet: tweet != False).filter(lambda tweet: 'created_at' in tweet).map(lambda tweet: (get_cordinates_from_event(tweet)[0],get_cordinates_from_event(tweet)[1],tweet["text"])).filter(lambda tpl: tpl[0] != 0).filter(lambda tpl: tpl[2] != '').map(lambda processed_tweet: (processed_tweet[0],processed_tweet[1],tokenize(processed_tweet[2]))).map(lambda processed_tweet:(processed_tweet[0],processed_tweet[1],processed_tweet[2],doc2vec(processed_tweet[2])))
     

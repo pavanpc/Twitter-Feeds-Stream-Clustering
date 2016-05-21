@@ -12,12 +12,15 @@ import json
 
 import re
 import string
+import matplotlib
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 import threading
 import Queue
 import time
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
+import pylab
 from pylab import rcParams
 import numpy as np
 import multiprocessing
@@ -37,7 +40,7 @@ from pyspark.mllib.feature import Word2VecModel
 BATCH_INTERVAL = 15  # How frequently to update (seconds)
 clusterNum=15
 # Change the backend to TkAgg to plot - only for Mac users
-plt.switch_backend('TkAgg')
+#plt.switch_backend('TkAgg')
 def get_cordinates_from_event(twitter_feed):
     '''
             Method to get lat ,long coordinates from twitter feed event
@@ -51,8 +54,8 @@ def get_cordinates_from_event(twitter_feed):
         # if coordinates key not found , get from place polygon key
         if twitter_feed['coordinates'] == None:
             coordinates = twitter_feed['place']['bounding_box']['coordinates']
-            coordinates = reduce(lambda agg, nxt: [agg[0] + nxt[0], agg[1] + nxt[1]], coord[0])
-            coordinates = tuple(map(lambda t: t / 4.0, coord))
+            coordinates = reduce(lambda agg, nxt: [agg[0] + nxt[0], agg[1] + nxt[1]], coordinates[0])
+            coordinates = tuple(map(lambda t: t / 4.0, coordinates))
         else:
             coordinates = tuple(twitter_feed['coordinates']['coordinates'])
     except TypeError:
@@ -69,7 +72,9 @@ def get_json_from_string(jsonString):
                 json: converted json 
         '''
     try:
-        json_object = json.loads(myjson.encode('utf-8'))
+        #print(jsonString)
+        json_object = json.loads(jsonString.encode('utf-8'))
+        #print(json_object)
     except ValueError, e:
         return False
     return json_object
@@ -96,7 +101,9 @@ def doc2vec(twitter_feed_document):
             continue
 
     #return(total_words)
-    return doc_vector / float(total_words)
+    if total_words>0:
+        return doc_vector / float(total_words)
+    return doc_vector
 
 
 # Reg ex to remove special characters from feed text
@@ -138,10 +145,69 @@ def get_most_popular_words(terms):
             We can also pass frequency as parameter 
         '''
     count_all = Counter()
-    count_all.update(terms_all)
+    count_all.update(terms)
     return count_all.most_common(5)
 
 def plot_data(q):
+    '''
+            Method to plot the data / cluster points after applying clustering on test data.
+            This is the target method of python mulitprocessing 
+            Args:
+                q: A queue which contains the coordinates for plotting.
+            Returns:
+        '''
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.basemap import Basemap
+    import matplotlib.pyplot as plt
+    from pylab import rcParams
+    import numpy as np
+
+    #plt.ion() 
+    llon = -130
+    ulon = 100
+    llat = -30
+    ulat = 60
+    rcParams['figure.figsize'] = (14,10)
+    my_map = Basemap(projection='merc',
+                resolution = 'l', area_thresh = 1000.0,
+                llcrnrlon=llon, llcrnrlat=llat, #min longitude (llcrnrlon) and latitude (llcrnrlat)
+                urcrnrlon=ulon, urcrnrlat=ulat) #max longitude (urcrnrlon) and latitude (urcrnrlat)
+
+    my_map.drawcoastlines()
+    my_map.drawcountries()
+    my_map.drawmapboundary()
+    my_map.fillcontinents(color = 'white', alpha = 0.3)
+    my_map.shadedrelief()
+    #plt.pause(0.0001)
+    plt.show()
+
+
+    colors = plt.get_cmap('jet')(np.linspace(0.0, 1.0, clusterNum))
+
+    while True:
+        if q.empty():
+            time.sleep(5)
+
+        else:
+            # when queue is not empty plot the results
+            obj=q.get()
+            d=[x[0][0] for x in obj]
+            c=[x[1] for x in obj]
+            data = np.array(d)
+            pcolor=np.array(c)
+            print("inside queue")
+            #print(c)
+            try:
+                xs,ys = my_map(data[:, 0], data[:, 1])
+                my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
+                plt.pause(0.0001)
+                plt.draw()
+                pylasb.savefig("test.png")
+                time.sleep(5)
+            except IndexError: # Empty array
+                pass
+
+def plot(obj):
     '''
             Method to plot the data / cluster points after applying clustering on test data.
             This is the target method of python mulitprocessing 
@@ -169,35 +235,40 @@ def plot_data(q):
     my_map.drawcoastlines()
     my_map.drawcountries()
     my_map.drawmapboundary()
-    my_map.fillcontinents(color = 'white', alpha = 0.3)
-    my_map.shadedrelief()
-    plt.pause(0.0001)
+    #my_map.fillcontinents()
+    #my_map.shadedrelief()
+    #plt.pause(0.0001)
     plt.show()
 
 
     colors = plt.get_cmap('jet')(np.linspace(0.0, 1.0, clusterNum))
+    # when queue is not empty plot the results
+    obj=q.get()
+    d=[x[0][0] for x in obj]
+    c=[x[1] for x in obj]
+    data = np.array(d)
+    pcolor=np.array(c)
+    print("inside queue")
+    #print(c)
+    try:
+        xs,ys = my_map(data[:, 0], data[:, 1])
+        my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
+        #plt.pause(0.0001)
+        plt.draw()
+        #time.sleep(5)
+    except IndexError: # Empty array
+        pass
 
-    while True:
-        if q.empty():
-            time.sleep(5)
-
-        else:
-            # when queue is not empty plot the results
-            obj=q.get()
-            d=[x[0][0] for x in obj]
-            c=[x[1] for x in obj]
-            data = np.array(d)
-            pcolor=np.array(c)
-            print("inside queue")
-            #print(c)
-            try:
-                xs,ys = my_map(data[:, 0], data[:, 1])
-                my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
-                plt.pause(0.0001)
-                plt.draw()
-                time.sleep(5)
-            except IndexError: # Empty array
-                pass
+def plot1(obj):
+    import matplotlib
+    matplotlib.use("TkAgg")
+    import matplotlib.pyplot as plt
+    m = Basemap(width=12000000,height=9000000,projection='lcc',
+            resolution='c',lat_1=45.,lat_2=55,lat_0=50,lon_0=-107.)
+    m.drawcoastlines()
+    m.drawmapboundary(fill_color='aqua')
+    #m.fillcontinents(color='coral',lake_color='aqua')
+    plt.show()
 
 if __name__ == "__main__":
     '''
@@ -224,12 +295,12 @@ if __name__ == "__main__":
     #  TODO:
     #  Change this based on number of kakfka partitions , time to process current batch.
     # The above point is very crucial in prouction systems to achieve better paralelism in spark and handle backpresure
-    stream=StreamingContext(sc,10) #
+    stream=StreamingContext(sc,30) #
     kafka_topic={'twitter-topic':1}
     # Read the stream into dstreams
     # Note : this is the loclahost mode
     kafkaStream = KafkaUtils.createStream(stream, 'localhost:2181', "name", kafka_topic) 
-
+    #print(kafkaStream.pprint())
     # Read word2vector model built offline using parquet
     sqlContext=SQLContext(sc)
     word2vec_model = sqlContext.read.parquet("/Users/pavanpc/Documents/lovoo/spark/spark-1.6.0/streaming_k_means_model/data").alias("word2vec_model")
@@ -241,10 +312,11 @@ if __name__ == "__main__":
     # Converts kafka event to json
     # Filters them based on created_at field in json. 
     # TODO: We can use Avro for schema management
-    #Gets  Coordinates lat,lng, and tokenize tweet text and append word2vect vector for every token
+    #Gets Coordinates lat,lng, and tokenize tweet text and append word2vect vector for every token
     print("Processing tweets....")
-    processed_tweets= kafkaStream.map(lambda tweet : get_json_from_string(tweet[1]) ).filter(lambda tweet: tweet != False).filter(lambda tweet: 'created_at' in tweet).map(lambda tweet: (get_cordinates_from_event(tweet)[0],get_cordinates_from_event(tweet)[1],tweet["text"])).filter(lambda tpl: tpl[0] != 0).filter(lambda tpl: tpl[2] != '').map(lambda processed_tweet: (processed_tweet[0],processed_tweet[1],tokenize(processed_tweet[2]))).map(lambda processed_tweet:(processed_tweet[0],processed_tweet[1],processed_tweet[2],doc2vec(processed_tweet[2])))
-    
+    processed_tweets= kafkaStream.map(lambda tweet : get_json_from_string(tweet[1]) ).filter(lambda tweet: tweet != False).filter(lambda tweet: 'created_at' in tweet).map(lambda tweet: (get_cordinates_from_event(tweet)[0],get_cordinates_from_event(tweet)[1],tweet["text"])).filter(lambda tpl: tpl[2] != '').map(lambda processed_tweet: (processed_tweet[0],processed_tweet[1],tokenize(processed_tweet[2]))).map(lambda processed_tweet:(processed_tweet[0],processed_tweet[1],processed_tweet[2],doc2vec(processed_tweet[2])))
+    print("Processed tweets")
+    #print(processed_tweets.pprint())
 
     # Training data of the form (lat.long, word2vect list for feed text)
     # Training uses the offline built model ie, word2vec_model
@@ -263,13 +335,21 @@ if __name__ == "__main__":
 
     print("Clustering feeds based on geo and word/topic simliarities....")
     clusters=model.predictOnValues(testdata)
+    print(clusters.pprint())
     topic=clusters.map(lambda x: (x[1],x[0][1]))
     # Aggregate based on words used in clusters which forms a topic
     topicAgg = topic.reduceByKey(lambda x,y: x+y)
     print("topic aggregation")
     popular_words_for_clusters=topicAgg.map(lambda x: (x[0],get_most_popular_words(x[1])))
     print(popular_words_for_clusters.pprint())
-    #clusters.foreachRDD(lambda time, rdd: q.put(rdd.collect()))
+
+    m = Basemap(width=12000000,height=9000000,projection='lcc',
+            resolution='c',lat_1=45.,lat_2=55,lat_0=50,lon_0=-107.)
+    m.drawcoastlines()
+    m.drawmapboundary(fill_color='aqua')
+    #plt.show()
+    pylab.savefig("test.png")
+    clusters.foreachRDD(lambda time, rdd: q.put(rdd.collect()))
     processed_tweets.repartition(1).saveAsTextFiles("output.txt")
     stream.start()
     stream.awaitTermination()

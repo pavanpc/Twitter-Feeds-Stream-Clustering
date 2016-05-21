@@ -60,7 +60,7 @@ def get_cordinates_from_event(twitter_feed):
     return coordinates
 
 
-def get_json_from_string_from_string(jsonString):
+def get_json_from_string(jsonString):
     '''
             Methos to convert the twitter feed event read from kafka to json
             Args:
@@ -88,7 +88,7 @@ def doc2vec(twitter_feed_document):
 
     for word in twitter_feed_document:
         try:
-            vector = np.array(lookup_bd.value.get(word))
+            vector = np.array(word2vec_model_brooadcast.value.get(word))
             if vec!= None:
                 doc_vector +=  vector
                 total_words += 1

@@ -28,6 +28,7 @@ Follow below steps as a <b>root user</b>
 
  <b>--------------------Streaming k-means Output based on  Geo and Tweet words similarity-----------------------</b>
  <br/>Points with same color tend to have similar geo and word similarities
+ <br/> Below is the plot for BATCH_INTERVAL 60sec and english language tweets
 ![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
        
 #Output 

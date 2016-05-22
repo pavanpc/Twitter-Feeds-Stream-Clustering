@@ -26,6 +26,15 @@ Follow below steps as a <b>root user</b>
 
 9. ./spark_setup.sh
 
+ <b>--------------------Streaming k-means Output based on  Geo and Tweet words similarity-----------------------</b>
+ <br/>Points with same color tend to have similar geo and word similarities
+ <br/> Below is the plot for BATCH_INTERVAL 60sec and english language tweets
+![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
+       
+#Output 
+1. The pyspark streaming app outputs the cluster details and the most popular words(based on frequency) in every cluster for every BATCH_INTERVAL.
+2. Plots the cluster points on basemap and saves it as 'Clusters_plot_on_world_map.png' file inside the spark container and in path /usr/local/spark/bin/
+
 
 ## Design Details
 ### Producer
@@ -36,8 +45,8 @@ Follow below steps as a <b>root user</b>
   1. The events from kafka is read using spark streaing
   2. The events are prepocessed which involves removing stopwords(extracted from nltk library for english),stemming and tokenizing.
   3. The test data is prepared for the events read.
-  4. To start with we should have some model which is already trained. So Googles'  word2vector model is used to train data offline and stored in parquet file.
-  5. The model is read from in streaming conext and the clusters are obtained applying streaming-kmeans with decay factor.
+  4. To start with we should have some model which is already trained. So Googles'  <b>word2vector</b> model is used to train data offline and stored in parquet file.
+  5. The model is read from in streaming conext and the clusters are obtained applying <b>streaming-kmeans</b> with decay factor.
   6. The clusters are formed based on geo and words similarities in twitter feeds. Read more about word2vector here.https://code.google.com/archive/p/word2vec/
 
 ### Spark configurations 
@@ -56,6 +65,13 @@ Follow below steps as a <b>root user</b>
   4. spark mllib
   5. matplotib
   6. numpy,scipy
-  7. java 7
-  8. twitter hbc java client
-  9. java kafka client
+  7. python multiprocessing
+  8. java 7
+  9. twitter hbc java client
+  10. java kafka client
+  
+## Improvements
+1. Using a better/bigger Word2Vec model as pre-trained offline model
+2. Replacing the off-line Word2Vec model with an evolving one (continues training model)
+3. Making use of other resources like news headline and Facebook posts.
+4. Better analysis of the kafka partitions and dstream partitions based on requirement/ processing resources available

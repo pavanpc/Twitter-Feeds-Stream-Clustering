@@ -13,7 +13,7 @@ import json
 import re
 import string
 import matplotlib
-matplotlib.use("TkAgg")
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import threading
 import time
@@ -74,7 +74,7 @@ def get_json_from_string(jsonString):
         #print(jsonString)
         json_object = json.loads(jsonString.encode('utf-8'))
         #print(json_object)
-    except ValueError, e:
+    except ValueError:
         return False
     return json_object
 
@@ -161,7 +161,7 @@ def plot_data(q):
     from pylab import rcParams
     import numpy as np
 
-    #plt.ion() 
+    plt.ioff() 
     llon = -130
     ulon = 100
     llat = -30
@@ -175,10 +175,10 @@ def plot_data(q):
     my_map.drawcoastlines()
     my_map.drawcountries()
     my_map.drawmapboundary()
-    my_map.fillcontinents(color = 'white', alpha = 0.3)
-    my_map.shadedrelief()
+    #my_map.fillcontinents(color = 'white', alpha = 0.3)
+    #my_map.shadedrelief()
     #plt.pause(0.0001)
-    plt.show()
+    #plt.show()
 
 
     colors = plt.get_cmap('jet')(np.linspace(0.0, 1.0, clusterNum))
@@ -198,10 +198,13 @@ def plot_data(q):
             #print(c)
             try:
                 xs,ys = my_map(data[:, 0], data[:, 1])
+                print("xsys")
+                print(xs)
+                print(ys)
                 my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
                 plt.pause(0.0001)
                 plt.draw()
-                pylasb.savefig("test.png")
+                plt.savefig("test1.png")
                 time.sleep(5)
             except IndexError: # Empty array
                 pass
@@ -214,13 +217,15 @@ def plot(obj):
                 q: A queue which contains the coordinates for plotting.
             Returns:
         '''
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from mpl_toolkits.basemap import Basemap
     import matplotlib.pyplot as plt
     from pylab import rcParams
     import numpy as np
-
-    plt.ion() 
+    print("---Inside plot---")
+    plt.ioff() 
     llon = -130
     ulon = 100
     llat = -30
@@ -237,7 +242,7 @@ def plot(obj):
     #my_map.fillcontinents()
     #my_map.shadedrelief()
     #plt.pause(0.0001)
-    plt.show()
+    #plt.show()
 
 
     colors = plt.get_cmap('jet')(np.linspace(0.0, 1.0, clusterNum))
@@ -253,7 +258,8 @@ def plot(obj):
         xs,ys = my_map(data[:, 0], data[:, 1])
         my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
         #plt.pause(0.0001)
-        plt.draw()
+        #plt.draw()
+        plt.savefig("test1.png")
         #time.sleep(5)
     except IndexError: # Empty array
         pass
@@ -294,15 +300,15 @@ if __name__ == "__main__":
     #  TODO:
     #  Change this based on number of kakfka partitions , time to process current batch.
     # The above point is very crucial in prouction systems to achieve better paralelism in spark and handle backpresure
-    stream=StreamingContext(sc,30) #
+    stream=StreamingContext(sc,10) #
     kafka_topic={'twitter-topic':1}
     # Read the stream into dstreams
     # Note : this is the loclahost mode
-    kafkaStream = KafkaUtils.createStream(stream, 'localhost:2181', "name", kafka_topic) 
+    kafkaStream = KafkaUtils.createStream(stream, 'kafka:2181', "name", kafka_topic) 
     #print(kafkaStream.pprint())
     # Read word2vector model built offline using parquet
     sqlContext=SQLContext(sc)
-    word2vec_model = sqlContext.read.parquet("word2vector_model/data").alias("word2vec_model")
+    word2vec_model = sqlContext.read.parquet("/home/jovyan/work/Twitter-Feeds-Stream-Clustering/pyspark-streaming-clustering/word2vector_model/data").alias("word2vec_model")
     #print(lookup.rdd.collectAsMap())
     print("Read Word2Vec model from parquet")
     # Boradcasting is used to avoid the copy of model in every machine/worker nodes
@@ -334,21 +340,20 @@ if __name__ == "__main__":
 
     print("Clustering feeds based on geo and word/topic simliarities....")
     clusters=model.predictOnValues(testdata)
+    print("===========Identified clusters============")
     print(clusters.pprint())
     topic=clusters.map(lambda x: (x[1],x[0][1]))
     # Aggregate based on words used in clusters which forms a topic
     topicAgg = topic.reduceByKey(lambda x,y: x+y)
     print("topic aggregation")
     popular_words_for_clusters=topicAgg.map(lambda x: (x[0],get_most_popular_words(x[1])))
+    print("==================Most frequent words/tokens with frequencies================")
     print(popular_words_for_clusters.pprint())
 
-    m = Basemap(width=12000000,height=9000000,projection='lcc',
-            resolution='c',lat_1=45.,lat_2=55,lat_0=50,lon_0=-107.)
-    m.drawcoastlines()
-    m.drawmapboundary(fill_color='aqua')
-    #plt.show()
-    pylab.savefig("test.png")
+    obj=[]
     clusters.foreachRDD(lambda time, rdd: q.put(rdd.collect()))
+
+
     processed_tweets.repartition(1).saveAsTextFiles("output.txt")
     stream.start()
     stream.awaitTermination()

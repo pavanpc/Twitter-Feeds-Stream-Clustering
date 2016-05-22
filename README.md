@@ -26,7 +26,7 @@ Follow below steps as a <b>root user</b>
 
 9. ./spark_setup.sh
 
-
+![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
 ## Design Details
 ### Producer
   1. A java client to publish messages to kafka using twitter hbc(https://github.com/twitter/hbc) streaming http client

@@ -1,5 +1,12 @@
 # Twiter Feeds clustring using kafka, Streaming spark and spark mllib
 
+
+## Usage
+Follow below steps as a root user
+1.Open a terminal window
+2. git clone
+
+
 ## Design Details
 ### Producer
   1. A java client to publish messages to kafka using twitter hbc(https://github.com/twitter/hbc) streaming http client

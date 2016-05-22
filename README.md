@@ -1,5 +1,32 @@
 # Twiter Feeds clustring using kafka, Streaming spark and spark mllib
 
+
+## Usage
+The <b>kafka_setup.sh</b> script brings the kafka image present in <b>docker-compose.yml</b> up and running. Also, it starts publishing the twitter events from streaming api to kafka topic. Once the kafka_setup.sh starts running, you can see the twitter events read on console.
+
+The <b>spark_setup.sh</b> script brings the spark image present in docker-compose.yml up and running. Also, it links the kafka container already created . Once the spark_setup.sh starts running, you can see the pysprk streaming application with streaing k-means clustering running .
+
+Follow below steps as a <b>root user</b>
+
+1. Open a terminal window.
+
+2. git clone https://github.com/pavanpc/Twitter-Feeds-Stream-Clustering.git
+
+3. cd Twitter-Feeds-Stream-Clustering
+
+4. chmod 755 kafka_setup.sh
+
+5. ./kafka_setup.sh
+
+6. Open a new terminal window
+
+7. cd to Twitter-Feeds-Stream-Clustering (the git project we have cloned in step 2)
+
+8. chmod 755 spark_setup.sh
+
+9. ./spark_setup.sh
+
+
 ## Design Details
 ### Producer
   1. A java client to publish messages to kafka using twitter hbc(https://github.com/twitter/hbc) streaming http client

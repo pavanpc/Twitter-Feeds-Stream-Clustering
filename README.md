@@ -27,6 +27,7 @@ Follow below steps as a <b>root user</b>
 9. ./spark_setup.sh
 
  <b>--------------------Streaming k-means Output based on  Geo and Tweet words similarity-----------------------</b>
+ Points with same color tend to have similar geo and word similarities
 ![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
                                                   
 ## Design Details
@@ -38,8 +39,8 @@ Follow below steps as a <b>root user</b>
   1. The events from kafka is read using spark streaing
   2. The events are prepocessed which involves removing stopwords(extracted from nltk library for english),stemming and tokenizing.
   3. The test data is prepared for the events read.
-  4. To start with we should have some model which is already trained. So Googles'  word2vector model is used to train data offline and stored in parquet file.
-  5. The model is read from in streaming conext and the clusters are obtained applying streaming-kmeans with decay factor.
+  4. To start with we should have some model which is already trained. So Googles'  <b>word2vector</b> model is used to train data offline and stored in parquet file.
+  5. The model is read from in streaming conext and the clusters are obtained applying <b>streaming-kmeans</b> with decay factor.
   6. The clusters are formed based on geo and words similarities in twitter feeds. Read more about word2vector here.https://code.google.com/archive/p/word2vec/
 
 ### Spark configurations 

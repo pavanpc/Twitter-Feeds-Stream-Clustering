@@ -1,0 +1,21 @@
+version: '2'
+services:
+  kafka:
+    image: antlypls/kafka
+    container_name: kafka
+    environment:
+      - KAFKA=localhost:9092
+      - ZOOKEEPER=localhost:2181
+    expose:
+      - "2181"
+      - "9092"
+  spark:
+    image: jupyter/all-spark-notebook:v3
+    container_name: spark
+    command: bash
+    volumes:
+      - ./target/scala-2.11:/app
+    # links:
+    #   -kafka
+    #   -carver
+

@@ -300,7 +300,7 @@ if __name__ == "__main__":
     #  TODO:
     #  Change this based on number of kakfka partitions , time to process current batch.
     # The above point is very crucial in prouction systems to achieve better paralelism in spark and handle backpresure
-    stream=StreamingContext(sc,10) #
+    stream=StreamingContext(sc,15) #
     kafka_topic={'twitter-topic':1}
     # Read the stream into dstreams
     # Note : this is the loclahost mode

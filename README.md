@@ -2,11 +2,11 @@
 
 
 ## Usage
-The kafka_setup.sh script brings the kafka image present in docker-compose.yml up and running. Also, it starts publishing the twitter events from streaming api to kafka topic. Once the kafka_setup.sh starts running you can see the twitter events read on console.
+The <b>kafka_setup.sh</b> script brings the kafka image present in <b>docker-compose.yml</b> up and running. Also, it starts publishing the twitter events from streaming api to kafka topic. Once the kafka_setup.sh starts running, you can see the twitter events read on console.
 
-The spark_setup.sh script brings the spark image present in docker-compose.yml up and running. Also, it links the kafka container already created . Once the spark_setup.sh starts running you can see the pysprk streaming application with streaing k-means clustering running .
+The <b>spark_setup.sh</b> script brings the spark image present in docker-compose.yml up and running. Also, it links the kafka container already created . Once the spark_setup.sh starts running, you can see the pysprk streaming application with streaing k-means clustering running .
 
-Follow below steps as a root user
+Follow below steps as a <b>root user</b>
 
 1. Open a terminal window.
 

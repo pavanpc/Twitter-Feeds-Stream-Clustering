@@ -64,6 +64,13 @@ Follow below steps as a <b>root user</b>
   4. spark mllib
   5. matplotib
   6. numpy,scipy
-  7. java 7
-  8. twitter hbc java client
-  9. java kafka client
+  7. python multiprocessing
+  8. java 7
+  9. twitter hbc java client
+  10. java kafka client
+  
+## Improvements
+1. Using a better/bigger Word2Vec model as pre-trained offline model
+2. Replacing the off-line Word2Vec model with an evolving one (continues training model)
+3. Making use of other resources like news headline and Facebook posts.
+4. Better analysis of the kafka partitions and dstream partitions based on requirement/ processing resources available

@@ -5,14 +5,22 @@
 
 Follow below steps as a root user
 
-1.Open a terminal window.
+1. Open a terminal window.
+
 2. git clone https://github.com/pavanpc/Twitter-Feeds-Stream-Clustering.git
+
 3. cd Twitter-Feeds-Stream-Clustering
+
 4. chmod 755 kafka_setup.sh
+
 5. ./kafka_setup.sh
+
 6. Open a new terminal window
+
 7. cd to Twitter-Feeds-Stream-Clustering (the git project we have cloned in step 2)
+
 8. chmod 755 spark_setup.sh
+
 9. ./spark_setup.sh
 
 

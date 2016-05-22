@@ -26,7 +26,7 @@ Follow below steps as a <b>root user</b>
 
 9. ./spark_setup.sh
 
-                      <b> Streaming k-means Output based on  Geo and Tweet words similarity</b>
+<b> Streaming k-means Output based on  Geo and Tweet words similarity</b>
 ![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
                                                   
 ## Design Details

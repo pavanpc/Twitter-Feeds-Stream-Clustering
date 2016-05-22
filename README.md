@@ -31,8 +31,10 @@ Follow below steps as a <b>root user</b>
 ![Alt text](Clusters_plot_on_world_map.png?raw=true "Optional Title")
        
 #Output 
-1. The pyspark streaming app outputs the cluster details and the most popular words(based on frequency) in every cluster.
-2. Plots the cluster points on basemap and saves it as 'Clusters_plot_on_world_map.png' file inside the spark container and in path /usr 
+1. The pyspark streaming app outputs the cluster details and the most popular words(based on frequency) in every cluster for every BATCH_INTERVAL.
+2. Plots the cluster points on basemap and saves it as 'Clusters_plot_on_world_map.png' file inside the spark container and in path /usr/local/spark/bin/
+
+
 ## Design Details
 ### Producer
   1. A java client to publish messages to kafka using twitter hbc(https://github.com/twitter/hbc) streaming http client

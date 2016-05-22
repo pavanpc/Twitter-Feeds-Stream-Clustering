@@ -1,5 +1,5 @@
 #add below line if you are using virtual box, dev2 is the virtual environment name
-eval "$(docker-machine env dev2)"
+#eval "$(docker-machine env dev2)"
 
 docker build -f Dockerfile_kafka .
 

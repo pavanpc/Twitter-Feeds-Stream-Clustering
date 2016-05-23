@@ -296,6 +296,7 @@ if __name__ == "__main__":
     # Intialized Spark config
     conf = SparkConf().setAppName("Kafka-Spark-Twitter-Feed-Clustering")
     sc = SparkContext(conf=conf)
+    sc.setLogLevel("ERROR")
     # get streaming context of batch interval 10 seconds
     #  TODO:
     #  Change this based on number of kakfka partitions , time to process current batch.

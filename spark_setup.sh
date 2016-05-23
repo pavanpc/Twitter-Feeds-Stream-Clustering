@@ -10,4 +10,4 @@ docker build -t jupyter/all-spark-notebook:v3 .
 docker-compose up -d
 
 #brings the spark container up and executes below command(starts spark streaming application) inside container and ouputs to stdout
-docker run -it jupyter/all-spark-notebook:v3 /usr/local/spark/bin/spark-submit  --packages org.apache.spark:spark-streaming-kafka_2.10:1.6.1  Twitter-Feeds-Stream-Clustering/pyspark-streaming-clustering/streaming_k_means.py
+docker run -it --link kafka  --net twitterfeedsstreamclustering_default jupyter/all-spark-notebook:v3 /usr/local/spark/bin/spark-submit  --jars Twitter-Feeds-Stream-Clustering/dependencies/spark-streaming-kafka-assembly_2.10-1.6.1.jar  Twitter-Feeds-Stream-Clustering/pyspark-streaming-clustering/streaming_k_means.py

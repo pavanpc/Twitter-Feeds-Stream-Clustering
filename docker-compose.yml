@@ -9,12 +9,14 @@ services:
     expose:
       - "2181"
       - "9092"
+    network_mode: "twitterfeedsstreamclustering_default"
   spark:
     image: jupyter/all-spark-notebook:v3
     container_name: spark
     command: bash
     volumes:
       - ./target/scala-2.11:/app
+    network_mode: "twitterfeedsstreamclustering_default"
     # links:
     #   -kafka
     #   -carver

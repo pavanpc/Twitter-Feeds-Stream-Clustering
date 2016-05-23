@@ -73,6 +73,8 @@ Follow below steps as a <b>root user</b>
   8. java 7
   9. twitter hbc java client
   10. java kafka client
+  11. docker
+  12. docker-compose 1.7
   
 ## Improvements
 1. Using a better/bigger Word2Vec model as pre-trained offline model

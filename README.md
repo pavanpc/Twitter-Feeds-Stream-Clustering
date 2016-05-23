@@ -26,9 +26,9 @@ Follow below steps as a <b>root user</b>
 
 9. ./spark_setup.sh
 
-<br/><b>Note:</b> <br/>1. The above docker file works for docker-compose version >1.6. If you are using <1.6 please use links tag(old way of linking containers) inside docker_compose.yml file as services are not valid in < 1.6. refer https://docs.docker.com/compose/networking/ for more info.
+<br/><b>Note:</b> <br/> 1. The above docker file works for docker-compose version >1.6. If you are using <1.6 please use links tag(old way of linking containers) inside docker_compose.yml file as services are not valid in < 1.6. refer https://docs.docker.com/compose/networking/ for more info.
 
-   2. We can use only one dockerfile to run the entire application. Just to show the functionality in of kafka and spark separately in two different terminal windows , I have used kafka_setup and spark_setup scripts.
+  2.We can use only one dockerfile to run the entire application. Just to show the functionality in of kafka and spark separately in two different terminal windows , I have used kafka_setup and spark_setup scripts.
 
  <b>--------------------Streaming k-means Output based on  Geo and Tweet words similarity-----------------------</b>
  <br/>Points with same color tend to have similar geo and word similarities

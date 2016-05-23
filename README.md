@@ -14,17 +14,17 @@ Follow below steps as a <b>root user</b>
 
 3. cd Twitter-Feeds-Stream-Clustering
 
-4. chmod 755 kafka_setup.sh
+4. chmod 755 spark_setup.sh
 
-5. ./kafka_setup.sh
+5. ./spark_setup.sh
 
 6. Open a new terminal window
 
 7. cd to Twitter-Feeds-Stream-Clustering (the git project we have cloned in step 2)
 
-8. chmod 755 spark_setup.sh
+8. chmod 755 kafka_setup.sh
 
-9. ./spark_setup.sh
+9. ./kafka_setup.sh
 
 <br/><b>Note:</b> <br/> 1. The above docker file works for docker-compose version >1.6. If you are using <1.6 please use links tag(old way of linking containers) inside docker_compose.yml file as services are not valid in < 1.6. refer https://docs.docker.com/compose/networking/ for more info.
 

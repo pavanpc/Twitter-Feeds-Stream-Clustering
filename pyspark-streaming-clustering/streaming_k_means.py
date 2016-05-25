@@ -71,9 +71,7 @@ def get_json_from_string(jsonString):
                 json: converted json 
         '''
     try:
-        #print(jsonString)
         json_object = json.loads(jsonString.encode('utf-8'))
-        #print(json_object)
     except ValueError:
         return False
     return json_object
@@ -99,7 +97,6 @@ def doc2vec(twitter_feed_document):
         except:
             continue
 
-    #return(total_words)
     if total_words>0:
         return doc_vector / float(total_words)
     return doc_vector
@@ -194,86 +191,16 @@ def plot_data(q):
             c=[x[1] for x in obj]
             data = np.array(d)
             pcolor=np.array(c)
-            print("inside queue")
-            #print(c)
             try:
                 xs,ys = my_map(data[:, 0], data[:, 1])
-                print("xsys")
-                print(xs)
-                print(ys)
                 my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
                 plt.pause(0.0001)
                 plt.draw()
-                plt.savefig("test1.png")
+                plt.savefig("Clusters_plot_on_world_map.png")
                 time.sleep(5)
             except IndexError: # Empty array
                 pass
 
-def plot(obj):
-    '''
-            Method to plot the data / cluster points after applying clustering on test data.
-            This is the target method of python mulitprocessing 
-            Args:
-                q: A queue which contains the coordinates for plotting.
-            Returns:
-        '''
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    from mpl_toolkits.basemap import Basemap
-    import matplotlib.pyplot as plt
-    from pylab import rcParams
-    import numpy as np
-    print("---Inside plot---")
-    plt.ioff() 
-    llon = -130
-    ulon = 100
-    llat = -30
-    ulat = 60
-    rcParams['figure.figsize'] = (14,10)
-    my_map = Basemap(projection='merc',
-                resolution = 'l', area_thresh = 1000.0,
-                llcrnrlon=llon, llcrnrlat=llat, #min longitude (llcrnrlon) and latitude (llcrnrlat)
-                urcrnrlon=ulon, urcrnrlat=ulat) #max longitude (urcrnrlon) and latitude (urcrnrlat)
-
-    my_map.drawcoastlines()
-    my_map.drawcountries()
-    my_map.drawmapboundary()
-    #my_map.fillcontinents()
-    #my_map.shadedrelief()
-    #plt.pause(0.0001)
-    #plt.show()
-
-
-    colors = plt.get_cmap('jet')(np.linspace(0.0, 1.0, clusterNum))
-    # when queue is not empty plot the results
-    obj=q.get()
-    d=[x[0][0] for x in obj]
-    c=[x[1] for x in obj]
-    data = np.array(d)
-    pcolor=np.array(c)
-    print("inside queue")
-    #print(c)
-    try:
-        xs,ys = my_map(data[:, 0], data[:, 1])
-        my_map.scatter(xs, ys,  marker='o', alpha = 0.5,color=colors[pcolor])
-        #plt.pause(0.0001)
-        #plt.draw()
-        plt.savefig("test1.png")
-        #time.sleep(5)
-    except IndexError: # Empty array
-        pass
-
-def plot1(obj):
-    import matplotlib
-    matplotlib.use("TkAgg")
-    import matplotlib.pyplot as plt
-    m = Basemap(width=12000000,height=9000000,projection='lcc',
-            resolution='c',lat_1=45.,lat_2=55,lat_0=50,lon_0=-107.)
-    m.drawcoastlines()
-    m.drawmapboundary(fill_color='aqua')
-    #m.fillcontinents(color='coral',lake_color='aqua')
-    plt.show()
 
 if __name__ == "__main__":
     '''
@@ -301,15 +228,15 @@ if __name__ == "__main__":
     #  TODO:
     #  Change this based on number of kakfka partitions , time to process current batch.
     # The above point is very crucial in prouction systems to achieve better paralelism in spark and handle backpresure
-    stream=StreamingContext(sc,15) #
+    stream=StreamingContext(sc,120) #
     kafka_topic={'twitter-topic':1}
     # Read the stream into dstreams
     # Note : this is the loclahost mode
-    kafkaStream = KafkaUtils.createStream(stream, 'kafka:2181', "name", kafka_topic) 
+    kafkaStream = KafkaUtils.createStream(stream, 'localhost:2181', "name", kafka_topic) 
     #print(kafkaStream.pprint())
     # Read word2vector model built offline using parquet
     sqlContext=SQLContext(sc)
-    word2vec_model = sqlContext.read.parquet("/home/jovyan/work/Twitter-Feeds-Stream-Clustering/pyspark-streaming-clustering/word2vector_model/data").alias("word2vec_model")
+    word2vec_model = sqlContext.read.parquet("/Users/pavanpc/Documents/lovoo/spark/spark-1.6.0/streaming_k_means_model/data").alias("word2vec_model")
     #print(lookup.rdd.collectAsMap())
     print("Read Word2Vec model from parquet")
     # Boradcasting is used to avoid the copy of model in every machine/worker nodes
@@ -346,15 +273,14 @@ if __name__ == "__main__":
     topic=clusters.map(lambda x: (x[1],x[0][1]))
     # Aggregate based on words used in clusters which forms a topic
     topicAgg = topic.reduceByKey(lambda x,y: x+y)
-    print("topic aggregation")
     popular_words_for_clusters=topicAgg.map(lambda x: (x[0],get_most_popular_words(x[1])))
     print("==================Most frequent words/tokens with frequencies================")
     print(popular_words_for_clusters.pprint())
 
-    obj=[]
+    
     clusters.foreachRDD(lambda time, rdd: q.put(rdd.collect()))
 
 
-    processed_tweets.repartition(1).saveAsTextFiles("output.txt")
+    processed_tweets.repartition(1).saveAsTextFiles("clusters.txt")
     stream.start()
     stream.awaitTermination()

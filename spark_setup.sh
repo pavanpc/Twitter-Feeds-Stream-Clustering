@@ -4,7 +4,7 @@
 docker build -f Dockerfile .
 
 # builds the new docker image for spark using Dockerfile present in current directory
-docker build -t jupyter/all-spark-notebook:v3 .
+docker build --no-cache -t jupyter/all-spark-notebook:v3 .
 
 #brings the spark image present in docker-compose.yml up and links it with the kafka image running
 docker-compose up -d

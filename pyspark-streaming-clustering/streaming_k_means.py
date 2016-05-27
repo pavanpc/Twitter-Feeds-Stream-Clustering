@@ -236,7 +236,7 @@ if __name__ == "__main__":
     #print(kafkaStream.pprint())
     # Read word2vector model built offline using parquet
     sqlContext=SQLContext(sc)
-    word2vec_model = sqlContext.read.parquet("/Users/pavanpc/Documents/lovoo/spark/spark-1.6.0/streaming_k_means_model/data").alias("word2vec_model")
+    word2vec_model = sqlContext.read.parquet("Twitter-Feeds-Stream-Clustering/pyspark-streaming-clustering/word2vector_model//data").alias("word2vec_model")
     #print(lookup.rdd.collectAsMap())
     print("Read Word2Vec model from parquet")
     # Boradcasting is used to avoid the copy of model in every machine/worker nodes

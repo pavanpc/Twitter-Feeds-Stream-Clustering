@@ -232,7 +232,7 @@ if __name__ == "__main__":
     kafka_topic={'twitter-topic':1}
     # Read the stream into dstreams
     # Note : this is the loclahost mode
-    kafkaStream = KafkaUtils.createStream(stream, 'localhost:2181', "name", kafka_topic) 
+    kafkaStream = KafkaUtils.createStream(stream, 'kafka:2181', "name", kafka_topic) 
     #print(kafkaStream.pprint())
     # Read word2vector model built offline using parquet
     sqlContext=SQLContext(sc)

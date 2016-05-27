@@ -6,6 +6,12 @@ docker build -f Dockerfile .
 # builds the new docker image for spark using Dockerfile present in current directory
 docker build --no-cache -t jupyter/all-spark-notebook:v3 .
 
+# Create network named  twitterfeedsstreamclustering_default to link with kafka
+docker network create twitterfeedsstreamclustering_default
+
+# Verify the network details and id
+docker network ls | grep twitterfeedsstreamclustering_default
+
 #brings the spark image present in docker-compose.yml up and links it with the kafka image running
 docker-compose up -d
 

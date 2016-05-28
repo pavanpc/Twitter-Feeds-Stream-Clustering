@@ -3,12 +3,16 @@
 
 docker build -f Dockerfile_kafka .
 
+docker cp server.properties kafka:/opt/kafka_2.11-0.9.0.0/config/server.properties
 #brings the kafka image present in docker_compose.yml up 
 docker-compose up -d
 
 # copies the fat jar and config required to publish twitter events to kafka
 docker cp twitter-feed-0.0.1-SNAPSHOT-jar-with-dependencies.jar kafka:/home/twitter-feed-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 docker cp AppConfig.properties kafka:/home/AppConfig.properties
+docker cp server.properties kafka:/opt/kafka_2.11-0.9.0.0/config/server.properties
+docker-compose restart
+
 
 docker exec -it $(docker-compose ps -q kafka) bash -c " kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic twitter-topic"
 

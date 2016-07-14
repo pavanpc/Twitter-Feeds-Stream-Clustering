@@ -1,4 +1,4 @@
-# Twiter Feeds clustring using kafka, Streaming spark and spark mllib
+# Twiter Feeds clustering using kafka, NLP(word2vec),Streaming spark and spark mllib
 
 
 ## Usage
